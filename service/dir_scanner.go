@@ -52,7 +52,7 @@ func populateFilesFromDirectory(dirPathToScan string, exclusions set.Set[string]
 		return nil
 	})
 	if wErr != nil {
-		return -1, fmt.Errorf("couldn't scan directory %s: %v", dirPathToScan, wErr)
+		return -1, fmt.Errorf("couldn't scan directory %s: %w", dirPathToScan, wErr)
 	}
 	return sizeOfScannedFiles, nil
 }

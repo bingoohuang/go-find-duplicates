@@ -25,7 +25,7 @@ func FindDuplicates(directories []string, excludedFiles set.Set[string], fileSiz
 	for _, dirPath := range directories {
 		size, pErr := populateFilesFromDirectory(dirPath, excludedFiles, fileSizeThreshold, allFiles)
 		if pErr != nil {
-			err = fmt.Errorf("error while scaning directory %s: %+v", dirPath, pErr)
+			err = fmt.Errorf("error while scaning directory %s: %w", dirPath, pErr)
 			return
 		}
 		totalSize += size

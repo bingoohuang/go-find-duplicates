@@ -20,6 +20,7 @@ import (
 	"github.com/m-manu/go-find-duplicates/fmte"
 	"github.com/m-manu/go-find-duplicates/service"
 	"github.com/m-manu/go-find-duplicates/utils"
+	"github.com/samber/lo"
 	flag "github.com/spf13/pflag"
 )
 
@@ -93,9 +94,7 @@ func setupThoroughOpt() {
 	p := flag.BoolP("thorough", "t", false,
 		"apply thorough check of uniqueness of files\n(caution: this makes the scan very slow!)",
 	)
-	flags.isThorough = func() bool {
-		return *p
-	}
+	flags.isThorough = func() bool { return *p }
 }
 
 func setupRemoveDuplicates() {
@@ -117,10 +116,7 @@ func setupParallelismOpt() {
 	flags.getParallelism = func() int {
 		if *p == defaultParallelismValue {
 			n := runtime.NumCPU()
-			if n > 1 {
-				return n - 1
-			}
-			return 1
+			return lo.Ternary(n > 1, n-1, 1)
 		}
 		return int(*p)
 	}

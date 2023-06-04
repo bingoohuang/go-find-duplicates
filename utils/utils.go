@@ -10,8 +10,8 @@ import (
 
 // IsReadableDirectory checks whether argument is a readable directory
 func IsReadableDirectory(path string) bool {
-	fileInfo, statErr := os.Stat(path)
-	if statErr != nil {
+	fileInfo, err := os.Stat(path)
+	if err != nil {
 		return false
 	}
 	return fileInfo.IsDir()
@@ -19,8 +19,8 @@ func IsReadableDirectory(path string) bool {
 
 // IsReadableFile checks whether argument is a readable file
 func IsReadableFile(path string) bool {
-	fileInfo, statErr := os.Stat(path)
-	if statErr != nil {
+	fileInfo, err := os.Stat(path)
+	if err != nil {
 		return false
 	}
 	return fileInfo.Mode().IsRegular()
