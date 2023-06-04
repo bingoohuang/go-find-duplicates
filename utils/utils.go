@@ -1,10 +1,11 @@
 package utils
 
 import (
-	set "github.com/deckarep/golang-set/v2"
 	"os"
 	"path/filepath"
 	"strings"
+
+	set "github.com/deckarep/golang-set/v2"
 )
 
 // IsReadableDirectory checks whether argument is a readable directory

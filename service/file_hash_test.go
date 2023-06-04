@@ -1,11 +1,12 @@
 package service
 
 import (
-	"github.com/m-manu/go-find-duplicates/bytesutil"
-	"github.com/stretchr/testify/assert"
 	"path/filepath"
 	"runtime"
 	"testing"
+
+	"github.com/m-manu/go-find-duplicates/bytesutil"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestConfig(t *testing.T) {
@@ -14,7 +15,7 @@ func TestConfig(t *testing.T) {
 
 func TestGetDigest(t *testing.T) {
 	goRoot := runtime.GOROOT()
-	var paths = []string{
+	paths := []string{
 		filepath.Join(goRoot, "/src/io/io.go"),
 		filepath.Join(goRoot, "/src/io/pipe.go"),
 	}

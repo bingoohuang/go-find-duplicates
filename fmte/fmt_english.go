@@ -1,10 +1,11 @@
 package fmte
 
 import (
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
 	"os"
 	"sync"
+
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 var p *message.Printer

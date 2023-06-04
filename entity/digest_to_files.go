@@ -1,8 +1,9 @@
 package entity
 
 import (
-	"github.com/emirpasic/gods/maps/treemap"
 	"sync"
+
+	"github.com/emirpasic/gods/maps/treemap"
 )
 
 // DigestToFiles is a multi-map with FileDigest keys and string values.
@@ -18,23 +19,29 @@ func FileDigestComparator(a, b any) int {
 	fb := b.(FileDigest)
 	if fa.FileSize < fb.FileSize {
 		return 1
-	} else if fa.FileSize > fb.FileSize {
-		return -1
-	} else {
-		if fa.FileExtension < fb.FileExtension {
-			return 1
-		} else if fa.FileExtension > fb.FileExtension {
-			return -1
-		} else {
-			if fa.FileHash < fb.FileHash {
-				return 1
-			} else if fa.FileHash > fb.FileHash {
-				return -1
-			} else {
-				return 0
-			}
-		}
 	}
+
+	if fa.FileSize > fb.FileSize {
+		return -1
+	}
+
+	if fa.FileExtension < fb.FileExtension {
+		return 1
+	}
+
+	if fa.FileExtension > fb.FileExtension {
+		return -1
+	}
+
+	if fa.FileHash < fb.FileHash {
+		return 1
+	}
+
+	if fa.FileHash > fb.FileHash {
+		return -1
+	}
+
+	return 0
 }
 
 // NewDigestToFiles creates new DigestToFiles

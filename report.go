@@ -5,41 +5,57 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
-	"github.com/m-manu/go-find-duplicates/entity"
-	"github.com/m-manu/go-find-duplicates/fmte"
 	"os"
 	"sort"
 	"strconv"
 	"time"
+
+	"github.com/m-manu/go-find-duplicates/entity"
+	"github.com/m-manu/go-find-duplicates/fmte"
+	"go.uber.org/multierr"
 )
 
 const bytesPerLineGuess = 500
 
 func reportDuplicates(duplicates *entity.DigestToFiles, outputMode string, allFiles entity.FilePathToMeta,
-	runID string, reportFileName string) error {
+	runID string, reportFileName string,
+) error {
 	var err error
-	if outputMode == entity.OutputModeStdOut || outputMode == entity.OutputModeTextFile {
+	switch outputMode {
+	case entity.OutputModeStdOut:
 		reportBytes := getReportAsText(duplicates)
-		if outputMode == entity.OutputModeTextFile {
-			createTextFileReport(reportFileName, reportBytes)
-		} else if outputMode == entity.OutputModeStdOut {
-			printReportToStdOut(runID, reportBytes)
-		}
-	} else if outputMode == entity.OutputModeCsvFile {
+		printReportToStdOut(runID, reportBytes)
+	case entity.OutputModeTextFile:
+		reportBytes := getReportAsText(duplicates)
+		createTextFileReport(reportFileName, reportBytes)
+	case entity.OutputModeCsvFile:
 		createCsvReport(duplicates, allFiles, reportFileName)
-	} else if outputMode == entity.OutputModeJSON {
+	case entity.OutputModeJSON:
 		err = createJSONReport(duplicates, reportFileName)
 	}
 	return err
 }
 
 func createTextFileReport(reportFileName string, report bytes.Buffer) {
-	rcErr := os.WriteFile(reportFileName, report.Bytes(), 0644)
+	rcErr := os.WriteFile(reportFileName, report.Bytes(), 0o644)
 	if rcErr != nil {
 		fmte.PrintfErr("error while creating report file %s: %+v\n", reportFileName, rcErr)
 		os.Exit(exitCodeErrorCreatingReport)
 	}
 	fmte.Printf("View duplicates report here: %s\n", reportFileName)
+}
+
+func RemoveDuplicates(duplicates *entity.DigestToFiles) (err error) {
+	for iter := duplicates.Iterator(); iter.HasNext(); {
+		_, paths := iter.Next()
+		for i, path := range paths {
+			if i > 0 {
+				err = multierr.Append(err, os.Remove(path))
+			}
+		}
+	}
+
+	return
 }
 
 func getReportAsText(duplicates *entity.DigestToFiles) bytes.Buffer {
@@ -82,7 +98,7 @@ func createCsvReport(duplicates *entity.DigestToFiles, allFiles entity.FilePathT
 		}
 	}
 	cf.Flush()
-	os.WriteFile(reportFileName, bb.Bytes(), 0644)
+	os.WriteFile(reportFileName, bb.Bytes(), 0o644)
 	fmte.Printf("View duplicates report here: %s\n", reportFileName)
 }
 
@@ -103,7 +119,7 @@ func createJSONReport(duplicates *entity.DigestToFiles, reportFileName string) e
 	if err != nil {
 		return err
 	}
-	os.WriteFile(reportFileName, jsonBytes, 0644)
+	os.WriteFile(reportFileName, jsonBytes, 0o644)
 	fmte.Printf("View duplicates report here: %s\n", reportFileName)
 	return nil
 }

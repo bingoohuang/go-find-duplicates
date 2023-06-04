@@ -3,12 +3,13 @@ package service
 import (
 	"errors"
 	"fmt"
-	set "github.com/deckarep/golang-set/v2"
-	"github.com/m-manu/go-find-duplicates/entity"
-	"github.com/m-manu/go-find-duplicates/fmte"
 	"io/fs"
 	"path/filepath"
 	"strings"
+
+	set "github.com/deckarep/golang-set/v2"
+	"github.com/m-manu/go-find-duplicates/entity"
+	"github.com/m-manu/go-find-duplicates/fmte"
 )
 
 // populateFilesFromDirectory scans the given directory and populates the given map with the files

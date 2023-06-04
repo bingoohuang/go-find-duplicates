@@ -1,14 +1,15 @@
 package service
 
 import (
+	"path/filepath"
+	"runtime"
+	"testing"
+
 	set "github.com/deckarep/golang-set/v2"
 	"github.com/m-manu/go-find-duplicates/entity"
 	"github.com/m-manu/go-find-duplicates/fmte"
 	"github.com/m-manu/go-find-duplicates/utils"
 	"github.com/stretchr/testify/assert"
-	"path/filepath"
-	"runtime"
-	"testing"
 )
 
 const exclusionsStr = ` .DS_Store 

@@ -33,21 +33,22 @@ const (
 //
 //	2.09 KiB
 func BinaryFormat(size int64) string {
-	if size < 0 {
+	switch {
+	case size < 0:
 		return ""
-	} else if size < KIBI {
+	case size < KIBI:
 		return fmt.Sprintf("%d B", size)
-	} else if size < MEBI {
+	case size < MEBI:
 		return fmt.Sprintf("%.2f KiB", float64(size)/float64(KIBI))
-	} else if size < GIBI {
+	case size < GIBI:
 		return fmt.Sprintf("%.2f MiB", float64(size)/float64(MEBI))
-	} else if size < TEBI {
+	case size < TEBI:
 		return fmt.Sprintf("%.2f GiB", float64(size)/float64(GIBI))
-	} else if size < PEBI {
+	case size < PEBI:
 		return fmt.Sprintf("%.2f TiB", float64(size)/float64(TEBI))
-	} else if size < EXBI {
+	case size < EXBI:
 		return fmt.Sprintf("%.2f PiB", float64(size)/float64(PEBI))
-	} else {
+	default:
 		return fmt.Sprintf("%.2f EiB", float64(size)/float64(EXBI))
 	}
 }
@@ -65,19 +66,26 @@ func BinaryFormat(size int64) string {
 func DecimalFormat(size int64) string {
 	if size < 0 {
 		return ""
-	} else if size < KILO {
-		return fmt.Sprintf("%d B", size)
-	} else if size < MEGA {
-		return fmt.Sprintf("%.2f KB", float64(size)/float64(KILO))
-	} else if size < GIGA {
-		return fmt.Sprintf("%.2f MB", float64(size)/float64(MEGA))
-	} else if size < TERA {
-		return fmt.Sprintf("%.2f GB", float64(size)/float64(GIGA))
-	} else if size < PETA {
-		return fmt.Sprintf("%.2f TB", float64(size)/float64(TERA))
-	} else if size < EXA {
-		return fmt.Sprintf("%.2f PB", float64(size)/float64(PETA))
-	} else {
-		return fmt.Sprintf("%.2f EB", float64(size)/float64(EXA))
 	}
+
+	if size < KILO {
+		return fmt.Sprintf("%d B", size)
+	}
+	if size < MEGA {
+		return fmt.Sprintf("%.2f KB", float64(size)/float64(KILO))
+	}
+	if size < GIGA {
+		return fmt.Sprintf("%.2f MB", float64(size)/float64(MEGA))
+	}
+	if size < TERA {
+		return fmt.Sprintf("%.2f GB", float64(size)/float64(GIGA))
+	}
+	if size < PETA {
+		return fmt.Sprintf("%.2f TB", float64(size)/float64(TERA))
+	}
+	if size < EXA {
+		return fmt.Sprintf("%.2f PB", float64(size)/float64(PETA))
+	}
+
+	return fmt.Sprintf("%.2f EB", float64(size)/float64(EXA))
 }

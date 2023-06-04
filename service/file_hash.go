@@ -4,12 +4,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/m-manu/go-find-duplicates/bytesutil"
-	"github.com/m-manu/go-find-duplicates/entity"
-	"github.com/m-manu/go-find-duplicates/utils"
 	"hash"
 	"hash/crc32"
 	"os"
+
+	"github.com/m-manu/go-find-duplicates/bytesutil"
+	"github.com/m-manu/go-find-duplicates/entity"
+	"github.com/m-manu/go-find-duplicates/utils"
 )
 
 const (
@@ -47,12 +48,13 @@ func fileHash(path string, isThorough bool) (string, error) {
 	var prefix string
 	var bytes []byte
 	var fileReadErr error
-	if isThorough {
+	switch {
+	case isThorough:
 		bytes, fileReadErr = os.ReadFile(path)
-	} else if fileInfo.Size() <= thresholdFileSize {
+	case fileInfo.Size() <= thresholdFileSize:
 		prefix = "f"
 		bytes, fileReadErr = os.ReadFile(path)
-	} else {
+	default:
 		prefix = "s"
 		bytes, fileReadErr = readCrucialBytes(path, fileInfo.Size())
 	}
